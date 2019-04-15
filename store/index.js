@@ -9,6 +9,8 @@ const store = () => new Vuex.Store({
   },
   state: {
     app: {
+      isAuth: false,
+      userName: ''
     }
   },
   getters: {

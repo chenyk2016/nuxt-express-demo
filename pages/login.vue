@@ -27,6 +27,7 @@
 <script>
 
 export default {
+  layout: 'single',
   data() {
     return {
       loading: false,
@@ -60,7 +61,6 @@ export default {
   },
   methods: {
     handleSubmit() {
-      console.log(111)
       this.$axios({
         url: '/api/auth/login',
         method: 'post',

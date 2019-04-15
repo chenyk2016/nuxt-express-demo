@@ -1,43 +1,48 @@
 // import axios from '~/plugins/axios'
 // import { hasAuth } from '~/units/auth'
 
-export default function (context) {
-  console.log('-----------------路由中间件:') // eslint-disable-line no-console
-  console.log(`store数据:`) // eslint-disable-line no-console
-  console.log(context.store.state) // eslint-disable-line no-console
-  // 服务器环境 只会在服务初始时运行
+// function canGo (store, route, redirect) {
+//   if (store.state.app.isAuth === true) {
+//     console.log('有权限') // eslint-disable-line no-console
+//     if (route.path === '/login') {
+//       // 有权限但是跳转登陆页面, 定向到主页
+//       redirect(302, '/')
+//     }
+//   } else {
+//     console.log('无权限') // eslint-disable-line no-console
+//     if (route.path !== '/login') {
+//       console.log('跳转登陆') // eslint-disable-line no-console
+//       redirect(302, '/login')
+//     }
+//   }
+// }
+
+export default function ({ store, req, redirect, route }) {
+  console.log('---------------路由中间件:') // eslint-disable-line no-console
+  // 有权限
   if (process.server) {
-    console.log(`page-session ID:`) // eslint-disable-line no-console
-    console.log(context.req.sessionID) // eslint-disable-line no-console
-    console.log(`page-session数据:`) // eslint-disable-line no-console
-    console.log(context.req.session) // eslint-disable-line no-console
-    if (context.req.session.userName) {
+    console.log('server端运行') // eslint-disable-line no-console
+    if (store.state.app.isAuth === false && req.session.userName) {
       console.log('有权限') // eslint-disable-line no-console
-      // 有权限但是跳转登陆页面， 定向到主页
-      if (context.req.originalUrl === '/login') {
-        context.redirect(302, '/')
-        return
+      // 更新store数据
+      // 更新数据后， store并不会立即更新
+      store.commit('SET_ISAUTH', true)
+      store.commit('SET_USERNAME', req.session.userName)
+      // canGo(store, route, redirect)
+      if (route.path === '/login') {
+        // 有权限但是跳转登陆页面, 定向到主页
+        redirect(302, '/')
       }
-      // console.log(context) // eslint-disable-line no-console
     } else {
-      console.log('跳转登陆1') // eslint-disable-line no-console
-      context.redirect(302, '/login')
+      console.log('无权限') // eslint-disable-line no-console
+      store.commit('SET_ISAUTH', false)
+      store.commit('SET_USERNAME', '')
+      redirect(302, '/login')
     }
   } else {
-    console.log(context.store) // eslint-disable-line no-console
-    // if (context.store.state.app.isAuth) {
-    //   console.log('有权限') // eslint-disable-line no-console
-    //   console.log(context) // eslint-disable-line no-console
-    //   // 有权限但是跳转登陆页面， 定向到主页
-    //   // if (context.req.originalUrl === '/login') {
-    //   //   // context.redirect(302, '/')
-    //   //   return
-    //   // }
-    // } else {
-    //   console.log('跳转登陆2') // eslint-disable-line no-console
-    //   context.redirect(302, '/login')
-    // }
+    // 初次打开服务页面，客户端中间件并不会运行
+    console.log('客户端运行') // eslint-disable-line no-console
+    console.log(store.state.app.isAuth) // eslint-disable-line no-console
   }
-
   console.log('----------------中间件结束') // eslint-disable-line no-console
 }

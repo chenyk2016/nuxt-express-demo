@@ -1,24 +1,12 @@
 <template>
   <div class="layout">
-    <Header class="header" :style="{ }">
-      <TopNav></TopNav>
-    </Header>
-    <Layout>
-      <Content :style="{padding: '0 16px 16px'}" class="min-height">
-        <nuxt />
-      </Content>
-    </Layout>
+    <nuxt />
   </div>
 </template>
 
 <script>
-import TopNav from '@/components/TopNav'
 
 export default {
-  name: 'Default',
-  components: {
-    TopNav
-  }
 }
 </script>
 
@@ -68,9 +56,6 @@ html {
 </style>
 
 <style scoped>
-.min-height{
-  min-height: calc(100vh - 64px );
-}
 .ivu-layout-sider{
   background: #fff;
 }
@@ -80,6 +65,7 @@ html {
   border-bottom: 1px solid #eee;
 }
 .layout{
+  min-height: 100vh;
   border: 1px solid #d7dde4;
   background: #f5f7f9;
   position: relative;

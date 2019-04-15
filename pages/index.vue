@@ -13,10 +13,6 @@
           user
         </Button>
       </div>
-      <div>
-        <Button @click="getUserInfo">获取用户信息</Button>
-        <Button @click="logout">退出</Button>
-      </div>
     </div>
   </section>
 </template>
@@ -24,6 +20,7 @@
 <script>
 import Logo from '~/components/Logo.vue'
 export default {
+  // middleware: 'auth',
   components: {
     Logo
   },
@@ -31,28 +28,6 @@ export default {
 
   },
   methods: {
-    getUserInfo () {
-      this.$axios({
-        url: '/api/auth/user',
-        method: 'get'
-      }).then(res => {
-        // console.log(res)
-      }).catch(e => {
-        this.$Message.error(e.message)
-      })
-    },
-    logout () {
-      this.$axios({
-        url: '/api/auth/logout',
-        method: 'post'
-      }).then(res => {
-        // console.log(res)
-        this.$Message.success('退出成功')
-        this.$router.push('/login')
-      }).catch(e => {
-        this.$Message.error(e.message)
-      })
-    }
   }
 }
 </script>
@@ -60,12 +35,13 @@ export default {
 <style>
 .container {
   margin: 0 auto;
-  min-height: 100vh;
+  min-height: 100%;
   display: flex;
   justify-content: center;
   align-items: center;
   text-align: center;
 }
+
 .title {
   font-family: 'Quicksand', 'Source Sans Pro', -apple-system, BlinkMacSystemFont,
     'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
@@ -75,6 +51,7 @@ export default {
   color: #35495e;
   letter-spacing: 1px;
 }
+
 .subtitle {
   font-weight: 300;
   font-size: 42px;
