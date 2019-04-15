@@ -1,3 +1,4 @@
+/* eslint-disable */
 const pkg = require('./package')
 
 module.exports = {
@@ -34,14 +35,28 @@ module.exports = {
   ** Plugins to load before mounting the App
   */
   plugins: [
-    '@/plugins/iview'
+    '@/plugins/iview',
+    '@/plugins/axios'
   ],
 
   /*
   ** Nuxt.js modules
   */
   modules: [
+    '@nuxtjs/pwa'
   ],
+
+  // API middleware
+  serverMiddleware: [
+    '~/server/api/auth-session.js'
+  ],
+
+  /**
+   * 路由中间件
+   */
+  router: {
+    middleware: 'auth'
+  },
 
   /*
   ** Build configuration

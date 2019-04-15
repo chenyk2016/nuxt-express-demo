@@ -3,21 +3,19 @@
     <div>
       <logo />
       <h1 class="title">
-        nuxt-express1
+        nuxt-espress2
       </h1>
       <h2 class="subtitle">
         Welcome to the iView + Nuxt.js template
       </h2>
       <div class="links">
-        <Button type="primary" target="_blank" to="https://nuxtjs.org/">
-          Documentation
+        <Button type="primary" to="/user">
+          user
         </Button>
-        <Button target="_blank" to="https://github.com/nuxt/nuxt.js">
-          GitHub
-        </Button>
-        <Button target="_blank" to="https://www.iviewui.com/">
-          iView
-        </Button>
+      </div>
+      <div>
+        <Button @click="getUserInfo">获取用户信息</Button>
+        <Button @click="logout">退出</Button>
       </div>
     </div>
   </section>
@@ -28,6 +26,33 @@ import Logo from '~/components/Logo.vue'
 export default {
   components: {
     Logo
+  },
+  mounted () {
+
+  },
+  methods: {
+    getUserInfo () {
+      this.$axios({
+        url: '/api/auth/user',
+        method: 'get'
+      }).then(res => {
+        // console.log(res)
+      }).catch(e => {
+        this.$Message.error(e.message)
+      })
+    },
+    logout () {
+      this.$axios({
+        url: '/api/auth/logout',
+        method: 'post'
+      }).then(res => {
+        // console.log(res)
+        this.$Message.success('退出成功')
+        this.$router.push('/login')
+      }).catch(e => {
+        this.$Message.error(e.message)
+      })
+    }
   }
 }
 </script>
